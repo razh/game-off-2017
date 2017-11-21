@@ -1,0 +1,22 @@
+{
+  "name": "game-off-2017",
+  "version": "1.0.0",
+  "description": "GitHub Game Off 2017",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/razh/game-off-2017.git"
+  },
+  "author": "razh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/razh/game-off-2017/issues"
+  },
+  "homepage": "https://github.com/razh/game-off-2017#readme",
+  "dependencies": {
+    "three": "0.88.0"
+  }
+}
