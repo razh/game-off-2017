@@ -4,7 +4,11 @@
   "description": "GitHub Game Off 2017",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": ["prettier --write", "eslint", "git add"]
   },
   "repository": {
     "type": "git",
@@ -18,5 +22,15 @@
   "homepage": "https://github.com/razh/game-off-2017#readme",
   "dependencies": {
     "three": "0.88.0"
+  },
+  "devDependencies": {
+    "eslint": "4.11.0",
+    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-config-prettier": "2.8.0",
+    "eslint-plugin-import": "2.8.0",
+    "eslint-plugin-prettier": "2.3.1",
+    "husky": "0.14.3",
+    "lint-staged": "5.0.0",
+    "prettier": "1.8.2"
   }
 }
