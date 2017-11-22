@@ -61,3 +61,4 @@ node_modules/**
 !node_modules/**/
 
 !node_modules/three/build/three.js
+!node_modules/three/examples/js/controls/OrbitControls.js
