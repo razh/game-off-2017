@@ -8,7 +8,11 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "src/**/*.js": ["prettier --write", "eslint", "git add"]
+    "src/**/*.js": [
+      "prettier --write",
+      "eslint",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -21,6 +25,7 @@
   },
   "homepage": "https://github.com/razh/game-off-2017#readme",
   "dependencies": {
+    "cannon": "0.6.2",
     "three": "0.88.0"
   },
   "devDependencies": {
