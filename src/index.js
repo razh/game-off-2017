@@ -11,6 +11,9 @@ let world;
 let sphereMesh;
 let sphereBody;
 
+const clock = new THREE.Clock();
+let running = false;
+
 function init() {
   container = document.createElement('div');
   document.body.appendChild(container);
@@ -70,21 +73,52 @@ function init() {
   world.addBody(sphereBody);
 }
 
-function update() {
-  world.step(1 / 60);
-  sphereMesh.position.copy(sphereBody.position);
-}
+const update = (() => {
+  const dt = 1 / 60;
+  let accumulatedTime = 0;
+
+  return () => {
+    const frameTime = Math.min(clock.getDelta(), 0.1);
+    accumulatedTime += frameTime;
+
+    while (accumulatedTime >= dt) {
+      world.step(dt);
+      accumulatedTime -= dt;
+    }
+
+    sphereMesh.position.copy(sphereBody.position);
+    sphereMesh.quaternion.copy(sphereBody.quaternion);
+  };
+})();
 
 function render() {
-  update();
   renderer.render(scene, camera);
 }
 
+function animate() {
+  update();
+  render();
+
+  if (running) {
+    requestAnimationFrame(animate);
+  }
+}
+
 init();
-render();
+animate();
 
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.addEventListener('change', render);
+
+document.addEventListener('keydown', event => {
+  // Pause/play.
+  if (event.code === 'KeyP') {
+    running = !running;
+    if (running) {
+      animate();
+    }
+  }
+});
 
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
