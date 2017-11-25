@@ -23,6 +23,8 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
 
+  renderer.shadowMap.enabled = true;
+
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(
     60,
@@ -35,6 +37,7 @@ function init() {
 
   const light = new THREE.DirectionalLight();
   light.position.set(8, 8, 8);
+  light.castShadow = true;
   scene.add(light);
 
   const groundMesh = new THREE.Mesh(
@@ -42,14 +45,17 @@ function init() {
     new THREE.MeshStandardMaterial(),
   );
   groundMesh.rotateX(-Math.PI / 2);
+  groundMesh.receiveShadow = true;
   scene.add(groundMesh);
 
   const sphereRadius = 1;
   sphereMesh = new THREE.Mesh(
-    new THREE.IcosahedronBufferGeometry(sphereRadius, 2),
+    new THREE.IcosahedronBufferGeometry(sphereRadius, 3),
     new THREE.MeshStandardMaterial(),
   );
   sphereMesh.position.y = 16;
+  sphereMesh.castShadow = true;
+  sphereMesh.receiveShadow = true;
   scene.add(sphereMesh);
 
   world = new CANNON.World();
