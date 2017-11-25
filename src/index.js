@@ -1,3 +1,5 @@
+import Bloom from './Bloom.js';
+
 const { THREE, CANNON } = window;
 
 let container;
@@ -5,6 +7,8 @@ let container;
 let scene;
 let camera;
 let renderer;
+
+let bloom;
 
 let world;
 
@@ -32,6 +36,8 @@ function init() {
   );
   camera.position.set(8, 8, 8);
   camera.lookAt(new THREE.Vector3());
+
+  bloom = new Bloom(renderer, scene, camera);
 
   scene.add(new THREE.AmbientLight('#777'));
 
@@ -98,7 +104,7 @@ const update = (() => {
 })();
 
 function render() {
-  renderer.render(scene, camera);
+  bloom.render();
 }
 
 function animate() {
@@ -131,5 +137,6 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
+  bloom.setSize(window.innerWidth, window.innerHeight);
   render();
 });

@@ -6,6 +6,9 @@ module.exports = {
   env: {
     browser: true,
   },
+  rules: {
+    'import/extensions': ['error', 'always'],
+  },
   overrides: [
     {
       files: 'prettier.config.js',
