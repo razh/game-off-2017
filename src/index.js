@@ -1,4 +1,6 @@
 import Bloom from './Bloom.js';
+import Controls from './Controls.js';
+import pointerLock from './pointerLock.js';
 
 const { THREE, CANNON } = window;
 
@@ -34,8 +36,16 @@ function init() {
     60,
     window.innerWidth / window.innerHeight,
   );
-  camera.position.set(8, 8, 8);
-  camera.lookAt(new THREE.Vector3());
+  const controls = new Controls(camera);
+  pointerLock(controls).addEventListener('change', event => {
+    if (event.enabled) {
+      running = true;
+      // eslint-disable-next-line no-use-before-define
+      animate();
+    }
+  });
+  controls.getObject().position.set(8, 8, 8);
+  scene.add(controls.getObject());
 
   bloom = new Bloom(renderer, scene, camera);
 
@@ -118,9 +128,6 @@ function animate() {
 
 init();
 animate();
-
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.addEventListener('change', render);
 
 document.addEventListener('keydown', event => {
   // Pause/play.
