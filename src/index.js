@@ -42,7 +42,7 @@ function init() {
   );
   const controls = new Controls(camera);
   pointerLock(controls).addEventListener('change', event => {
-    if (event.enabled) {
+    if (event.enabled && !running) {
       running = true;
       // eslint-disable-next-line no-use-before-define
       animate();
