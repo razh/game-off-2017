@@ -53,7 +53,7 @@ function init() {
   playerObject.add(controls.getObject());
   playerObject.position.set(8, 8, 8);
   playerObject.update = (() => {
-    const defaultSpeed = 8;
+    const defaultSpeed = 16;
     const velocity = new THREE.Vector3();
     const rotation = new THREE.Euler();
     const quaternion = new THREE.Quaternion();
@@ -83,7 +83,7 @@ function init() {
 
       let speed = defaultSpeed;
       if (keys.ShiftLeft || keys.ShiftRight) {
-        speed *= 4;
+        speed *= 2;
       }
 
       // Translate playerBody.
@@ -95,10 +95,10 @@ function init() {
 
   bloom = new Bloom(renderer, scene, camera);
 
-  scene.add(new THREE.AmbientLight('#777'));
+  scene.add(new THREE.AmbientLight('#333'));
 
   const light = new THREE.SpotLight();
-  light.position.set(8, 8, 8);
+  light.position.set(16, 16, 16);
   light.castShadow = true;
   light.shadow.mapSize.width = 1024;
   light.shadow.mapSize.height = 1024;
@@ -106,8 +106,9 @@ function init() {
   scene.add(new THREE.SpotLightHelper(light));
   scene.add(light);
 
+  const size = 64;
   const groundMesh = new THREE.Mesh(
-    new THREE.PlaneBufferGeometry(32, 32),
+    new THREE.PlaneBufferGeometry(size, size),
     new THREE.MeshStandardMaterial(),
   );
   groundMesh.rotateX(-Math.PI / 2);
@@ -150,6 +151,45 @@ function init() {
     shape: new CANNON.Sphere(sphereRadius),
   });
   world.addBody(sphereBody);
+
+  // Create walls.
+  const height = 8;
+  const thickness = 4;
+  [
+    {
+      position: [0, 0, -size / 2],
+      dimensions: [size, height, thickness],
+    },
+    {
+      position: [0, 0, size / 2],
+      dimensions: [size, height, thickness],
+    },
+    {
+      position: [-size / 2, 0, 0],
+      dimensions: [thickness, height, size],
+    },
+    {
+      position: [size / 2, 0, 0],
+      dimensions: [thickness, height, size],
+    },
+  ].forEach(box => {
+    const mesh = new THREE.Mesh(
+      new THREE.BoxBufferGeometry(...box.dimensions),
+      new THREE.MeshStandardMaterial({ color: '#333' }),
+    );
+    mesh.position.fromArray(box.position);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    scene.add(mesh);
+
+    const halfExtents = new CANNON.Vec3(...box.dimensions.map(d => d / 2));
+    const body = new CANNON.Body({
+      mass: 0,
+      position: new CANNON.Vec3(...box.position),
+      shape: new CANNON.Box(halfExtents),
+    });
+    world.addBody(body);
+  });
 }
 
 const update = (() => {
