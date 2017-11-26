@@ -43,9 +43,19 @@ export default class Controls {
     return this.yawObject;
   }
 
-  getDirection(v = new THREE.Vector3()) {
-    rotation.set(this.pitchObject.rotation.x, this.yawObject.rotation.y, 0);
-    v.copy(direction).applyEuler(rotation);
-    return v;
+  getDirection(vector = new THREE.Vector3()) {
+    this.getEuler(rotation);
+    vector.copy(direction).applyEuler(rotation);
+    return vector;
+  }
+
+  getEuler(euler = new THREE.Euler()) {
+    return euler.set(this.pitchObject.rotation.x, this.yawObject.rotation.y, 0);
+  }
+
+  getQuaternion(quaternion = new THREE.Quaternion()) {
+    this.getEuler(rotation);
+    quaternion.setFromEuler(rotation);
+    return quaternion;
   }
 }

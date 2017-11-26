@@ -8,6 +8,7 @@ module.exports = {
   },
   rules: {
     'import/extensions': ['error', 'always'],
+    'no-plusplus': 'off',
   },
   overrides: [
     {
